@@ -53,6 +53,7 @@ def index():
 
 @app.route('/hello/<name>')
 def hello(name):
+    tracer = config.initialize_tracer()
     with tracer.start_span('Hello') as span:
         span.log_event('hello message', payload={'life': 42})
 
