@@ -2,8 +2,8 @@ apiVersion: v1
 kind: BuildConfig
 metadata:
   labels:
-    app: python-sample
-  name: python-sample
+    app: jaeger-python-sample
+  name: jaeger-python-sample
 spec:
   failedBuildsHistoryLimit: 3
   nodeSelector: null
@@ -12,7 +12,7 @@ spec:
   runPolicy: Serial
   source:
     git:
-      uri: 'https://github.com/snowdeer/openshift-python-sample.git'
+      uri: 'https://github.com/snowdeer/openshift-jaeger-python-client-sample.git'
     type: Git
   strategy:
     dockerStrategy:
@@ -25,23 +25,23 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: 'python-sample:latest'
+      name: 'jaeger-python-sample:latest'
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: python-sample
+  name: jaeger-python-sample
   labels:
-    app: python-sample
+    app: jaeger-python-sample
 spec:
   template:
     metadata:
       labels:
-        app: python-sample
+        app: jaeger-python-sample
     spec:
       containers:
-      - image:  snowdeer/python-sample:latest
-        name: python-sample
+      - image:  snowdeer/jaeger-python-sample:latest
+        name: jaeger-python-sample
         ports:
         - containerPort: 8080
           protocol: TCP
@@ -49,15 +49,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: python-sample
+  name: jaeger-python-sample
   labels:
-    app: python-sample
+    app: jaeger-python-sample
 spec:
   ports:
-  - name: python-sample
+  - name: jaeger-python-sample
     port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
-    app: python-sample
+    app: jaeger-python-sample
   type: LoadBalancer
