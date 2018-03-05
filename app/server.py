@@ -50,5 +50,20 @@ def hello():
         'home_dir': HOME_DIR
     })
 
+
+@app.route('/hello/<name>')
+def hello(name):
+    with tracer.start_span('Hello') as span:
+        span.log_event('hello message', payload={'life': 42})
+
+        with tracer.start_span(name, child_of=span) as child_span:
+            span.log_event('down below')
+
+    time.sleep(2)   # yield to IOLoop to flush the spans - https://github.com/jaegertracing/jaeger-client-python/issues/50
+    tracer.close()  # flush any buffered spans
+
+    return 'Hello, {}'.format(name)
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=PORT)
