@@ -31,7 +31,7 @@ config = Config(
 tracer = config.initialize_tracer()
 
 @app.route('/')
-def hello():
+def index():
     with tracer.start_span('TestSpan') as span:
         span.log_event('test message', payload={'life': 42})
 
