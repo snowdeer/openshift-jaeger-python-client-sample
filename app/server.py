@@ -32,6 +32,7 @@ tracer = config.initialize_tracer()
 
 @app.route('/')
 def index():
+    #tracer = config.initialize_tracer()
     with tracer.start_span('TestSpan') as span:
         span.log_event('test message', payload={'life': 42})
 
@@ -39,7 +40,7 @@ def index():
             span.log_event('down below')
 
     time.sleep(2)   # yield to IOLoop to flush the spans - https://github.com/jaegertracing/jaeger-client-python/issues/50
-    tracer.close()  # flush any buffered spans
+    #tracer.close()  # flush any buffered spans
 
     return jsonify({
         'purpose': 'Jaeger Tracing Test',
@@ -53,7 +54,7 @@ def index():
 
 @app.route('/hello/<name>')
 def hello(name):
-    tracer = config.initialize_tracer()
+    #tracer = config.initialize_tracer()
     with tracer.start_span('Hello') as span:
         span.log_event('hello message', payload={'life': 42})
 
@@ -61,7 +62,7 @@ def hello(name):
             span.log_event('down below')
 
     time.sleep(2)   # yield to IOLoop to flush the spans - https://github.com/jaegertracing/jaeger-client-python/issues/50
-    tracer.close()  # flush any buffered spans
+    #tracer.close()  # flush any buffered spans
 
     return 'Hello, {}'.format(name)
 
